@@ -1,14 +1,14 @@
 -- Name of the auto body shop.
 
-AutoBodyNPC.Name = "BRYAN'S MOTORWORKS"
+AutoBodyNPC.Config.Name = "BRYAN'S MOTORWORKS"
 
 -- Model for the auto body shop NPC.
 
-AutoBodyNPC.Model = "models/eli.mdl"
+AutoBodyNPC.Config.Model = "models/eli.mdl"
 
 -- Radius to find cars that the player owns.
 
-AutoBodyNPC.CarFindRadius = 500
+AutoBodyNPC.Config.CarFindRadius = 500
 
 -- Price for a respray for prices that haven't been explicitly defined for a specific car.
 
