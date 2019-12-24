@@ -3,7 +3,7 @@ AddCSLuaFile( "shared.lua" )
 include( "shared.lua" )
 
 function ENT:Initialize( )
-	self:SetModel( AutoBodyNPC.Model )
+	self:SetModel( AutoBodyNPC.Config.Model )
 	self:SetHullType( HULL_HUMAN )
 	self:SetSolid( SOLID_BBOX )
 	self:SetHullSizeNormal( )
