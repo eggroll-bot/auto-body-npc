@@ -1,0 +1,11 @@
+ENT.Base = "base_ai"
+ENT.Type = "ai"
+ENT.PrintName		= "Rockford Customs NPC"
+ENT.Category 		= "Rockford Customs"
+ENT.Author			= "TheAsian EggrollMaker"
+ENT.Contact    		= "theasianeggrollmaker@gmail.com"
+ENT.Purpose 		= ""
+ENT.Instructions 	= ""
+ENT.AutomaticFrameAdvance = true
+ENT.Spawnable			= true
+ENT.AdminSpawnable		= false
