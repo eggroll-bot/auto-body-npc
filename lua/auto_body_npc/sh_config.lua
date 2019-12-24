@@ -10,7 +10,7 @@ AutoBodyNPC.Config.GlobalResprayPrice = 750
 
 AutoBodyNPC.Config.GlobalBodygroupPrice = 500
 
--- Price for an engine upgrade for prices that haven't been explicitly defined for a specific car.
+-- Price for an engine upgrade (per tier) for prices that haven't been explicitly defined for a specific car.
 
 AutoBodyNPC.Config.GlobalEnginePrice = 1500
 
@@ -116,7 +116,7 @@ AutoBodyNPC.Config.CustomCars = {
 			}
 		},
 
-		[ "engine" ] = 2000, -- Price for an engine upgrade.
+		[ "engine" ] = 2000, -- Price for an engine upgrade (per tier).
 
 		[ "underglow" ] = { -- Prices for underglow colors.
 			[ "Red" ] = 750,
