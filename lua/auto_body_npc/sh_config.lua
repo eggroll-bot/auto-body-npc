@@ -2,6 +2,10 @@
 
 AutoBodyNPC.Name = "BRYAN'S MOTORWORKS"
 
+-- Model for the auto body shop NPC.
+
+AutoBodyNPC.Model = "models/eli.mdl"
+
 -- Price for a respray for prices that haven't been explicitly defined for a specific car.
 
 AutoBodyNPC.Config.GlobalResprayPrice = 750
