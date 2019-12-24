@@ -6,6 +6,10 @@ AutoBodyNPC.Name = "BRYAN'S MOTORWORKS"
 
 AutoBodyNPC.Model = "models/eli.mdl"
 
+-- Radius to find cars that the player owns.
+
+AutoBodyNPC.CarFindRadius = 500
+
 -- Price for a respray for prices that haven't been explicitly defined for a specific car.
 
 AutoBodyNPC.Config.GlobalResprayPrice = 750
