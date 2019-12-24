@@ -10,5 +10,3 @@ hook.Add( "CanProperty", "AutoBodyNPC_CanCustomizeProperties", function( _, prop
 		return false
 	end
 end )
-
-hook.Remove( "CanProperty", "AutoBodyNPC_CanCustomizeProperties" )
