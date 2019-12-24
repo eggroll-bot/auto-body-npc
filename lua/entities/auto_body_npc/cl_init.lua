@@ -7,6 +7,6 @@ function ENT:Draw( )
 	ang:RotateAroundAxis( ang:Up( ), 90 )
 	ang:RotateAroundAxis( ang:Forward( ), 90 )
 	cam.Start3D2D( pos, ang, 0.25 )
-	draw.SimpleText( "ROCKFORD CUSTOMS", "DermaLarge", 0, -310, Color( 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+	draw.SimpleText( AutoBodyNPC.Name, "DermaDefault", 0, -310, Color( 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 	cam.End3D2D( )
 end

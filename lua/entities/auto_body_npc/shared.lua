@@ -1,0 +1,11 @@
+ENT.Base = "base_ai"
+ENT.Type = "ai"
+ENT.PrintName = "Auto Body Shop NPC"
+ENT.Category = "Other"
+ENT.Author = "TheAsian EggrollMaker"
+ENT.Contact = "theasianeggrollmaker@gmail.com"
+ENT.Purpose = ""
+ENT.Instructions = ""
+ENT.AutomaticFrameAdvance = true
+ENT.Spawnable = true
+ENT.AdminSpawnable = false

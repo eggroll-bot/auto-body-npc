@@ -1,20 +1,24 @@
+-- Name of the auto body shop.
+
+AutoBodyNPC.Name = "ROCKFORD CUSTOMS"
+
 -- Price for a respray for prices that haven't been explicitly defined for a specific car.
 
-RockfordCustomsNPC.Config.GlobalResprayPrice = 750
+AutoBodyNPC.Config.GlobalResprayPrice = 750
 
 -- Price for a bodygroup change for prices that haven't been explicitly defined for a specific car.
 
-RockfordCustomsNPC.Config.GlobalBodygroupPrice = 500
+AutoBodyNPC.Config.GlobalBodygroupPrice = 500
 
 -- Price for an engine upgrade for prices that haven't been explicitly defined for a specific car.
 
-RockfordCustomsNPC.Config.GlobalEnginePrice = 1500
+AutoBodyNPC.Config.GlobalEnginePrice = 1500
 
 -- Prices for underglow for prices that haven't been explicitly defined for a specific car. Example is below.
 
 --[[
 
-RockfordCustomsNPC.Config.GlobalUnderglowPrices = {
+AutoBodyNPC.Config.GlobalUnderglowPrices = {
 	[ "Red" ] = { -- Display name of color. This is what is displayed in the menu.
 		[ "color" ] = Color( 255, 0, 0 ), -- RGB color.
 		[ "price" ] = 500 -- Price.
@@ -23,7 +27,7 @@ RockfordCustomsNPC.Config.GlobalUnderglowPrices = {
 
 ]]
 
-RockfordCustomsNPC.Config.GlobalUnderglowPrices = {
+AutoBodyNPC.Config.GlobalUnderglowPrices = {
 	[ "Red" ] = {
 		[ "color" ] = Color( 255, 0, 0 ),
 		[ "price" ] = 500
@@ -44,7 +48,7 @@ RockfordCustomsNPC.Config.GlobalUnderglowPrices = {
 
 --[[
 
-RockfordCustomsNPC.Config.CustomCars = {
+AutoBodyNPC.Config.CustomCars = {
 	[ "wranglertdm" ] = { -- Vehicle class name
 		[ "respray" ] = 1000, -- Price for a respray.
 
@@ -84,7 +88,7 @@ RockfordCustomsNPC.Config.CustomCars = {
 
 ]]
 
-RockfordCustomsNPC.Config.CustomCars = {
+AutoBodyNPC.Config.CustomCars = {
 	[ "wranglertdm" ] = { -- Vehicle class name
 		[ "respray" ] = 1000, -- Price for a respray.
 
