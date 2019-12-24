@@ -16,7 +16,7 @@ end
 
 function ENT:SpawnFunction( _, tr )
 	local spawnPos = tr.HitPos + tr.HitNormal * 16
-	local ent = ents.Create( "rockford_customs_npc" )
+	local ent = ents.Create( "auto_body_npc" )
 	ent:SetPos( spawnPos )
 	ent:Spawn( )
 	ent:Activate( )
