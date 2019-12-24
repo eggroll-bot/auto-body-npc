@@ -1,6 +1,6 @@
 -- Name of the auto body shop.
 
-AutoBodyNPC.Name = "ROCKFORD CUSTOMS"
+AutoBodyNPC.Name = "BRYAN'S MOTORWORKS"
 
 -- Price for a respray for prices that haven't been explicitly defined for a specific car.
 
