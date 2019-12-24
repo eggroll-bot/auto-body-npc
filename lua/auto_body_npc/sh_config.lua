@@ -44,6 +44,13 @@ AutoBodyNPC.Config.GlobalUnderglowPrices = {
 	}
 }
 
+-- "Pretty" bodygroup names for each bodygroup type. If a bodygroup type is left out, the bodygroup type's name will be used with the first letter capitalized. Example: "hood" -> "Hood", "wheel" -> "Wheel".
+
+AutoBodyNPC.Config.BodygroupNames = {
+	[ "bumperf" ] = "Front Bumper",
+	[ "bumperr" ] = "Rear Bumper"
+}
+
 -- Prices for the above options customized per car. If you leave out any option below, it will default to the global prices set above. Example is below.
 
 --[[
