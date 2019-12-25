@@ -31,7 +31,8 @@ AutoBodyNPC.Config.GlobalEnginePrice = 1500
 --[[
 
 AutoBodyNPC.Config.GlobalUnderglowSettings = {
-	[ "RED" ] = { -- Display name of color. This is what is displayed in the menu.
+	{
+		[ "name" ] = "RED" -- Display name of color. This is what is displayed in the menu.
 		[ "color" ] = Color( 255, 0, 0 ), -- RGB color.
 		[ "price" ] = 500 -- Price.
 	}
@@ -40,17 +41,20 @@ AutoBodyNPC.Config.GlobalUnderglowSettings = {
 ]]
 
 AutoBodyNPC.Config.GlobalUnderglowSettings = {
-	[ "RED" ] = {
+	{
+		[ "name" ] = "RED",
 		[ "color" ] = Color( 255, 0, 0 ),
 		[ "price" ] = 500
 	},
 
-	[ "GREEN" ] = {
+	{
+		[ "name" ] = "GREEN",
 		[ "color" ] = Color( 0, 255, 0 ),
 		[ "price" ] = 500
 	},
 
-	[ "BLUE" ] = {
+	{
+		[ "name" ] = "BLUE",
 		[ "color" ] = Color( 0, 0, 255 ),
 		[ "price" ] = 500
 	}
