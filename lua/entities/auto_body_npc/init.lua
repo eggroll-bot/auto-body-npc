@@ -1,6 +1,7 @@
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
 include( "shared.lua" )
+util.AddNetworkString( "AutoBodyNPC_OpenGUI" )
 
 function ENT:Initialize( )
 	self:SetModel( AutoBodyNPC.Config.Model )
@@ -25,5 +26,7 @@ function ENT:SpawnFunction( _, tr )
 end
 
 function ENT:Use( ply )
-	--
+	net.Start( "AutoBodyNPC_OpenGUI" )
+	net.WriteEntity( self )
+	net.Send( ply )
 end
