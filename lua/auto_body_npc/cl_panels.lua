@@ -196,9 +196,9 @@ function PANEL:CreateSkinsPanel( equipped ) -- Desync the equipped from the serv
 
 	for i = 0, self.ActiveVehicle:SkinCount( ) - 1 do
 		if i == equipped then
-			self:AddButton( "Skin " .. i + 1, function( ) end, 5, "Equipped" )
+			self:AddButton( "SKIN " .. i + 1, function( ) end, 5, "EQUIPPED" )
 		else
-			self:AddButton( "Skin " .. i + 1, function( btn )
+			self:AddButton( "SKIN " .. i + 1, function( btn )
 				-- still need to set skin and buy.
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateSkinsPanel( i )
@@ -221,7 +221,7 @@ function PANEL:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_option
 
 	for i = 0, num_options - 1 do
 		if i == equipped then
-			self:AddButton( "Option " .. i + 1, function( ) end, 5, "Equipped" )
+			self:AddButton( "OPTION " .. i + 1, function( ) end, 5, "EQUIPPED" )
 		else
 			local current_price
 
@@ -232,7 +232,7 @@ function PANEL:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_option
 
 			current_price = current_price or price
 
-			self:AddButton( "Option " .. i + 1, function( btn )
+			self:AddButton( "OPTION " .. i + 1, function( btn )
 				-- still need to set bodygroup and buy.
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_options, i )
@@ -273,9 +273,9 @@ function PANEL:CreateEnginePanel( equipped )
 	end, 15, "<", true )
 
 	if equipped == 0 then
-		self:AddButton( "Stock Engine", function( ) end, 5, "Equipped" )
+		self:AddButton( "STOCK ENGINE", function( ) end, 5, "EQUIPPED" )
 	else
-		self:AddButton( "Stock Engine", function( btn )
+		self:AddButton( "STOCK ENGINE", function( btn )
 			-- change engine level to 0.
 			local current_hoverlerp = btn.hoverlerp
 			self:CreateEnginePanel( 0 )
@@ -285,13 +285,13 @@ function PANEL:CreateEnginePanel( equipped )
 
 	for i = 1, 4 do
 		if i == equipped then
-			self:AddButton( "EMS Upgrade Level " .. i, function( ) end, 5, "Equipped" )
+			self:AddButton( "EMS UPGRADE LEVEL " .. i, function( ) end, 5, "EQUIPPED" )
 		else
 			local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
 			local engine_price_multiplier = config_custom_cars and config_custom_cars.engine or AutoBodyNPC.Config.GlobalEnginePrice
 			local price = DarkRP.formatMoney( engine_price_multiplier * i )
 
-			self:AddButton( "EMS Upgrade Level " .. i, function( btn )
+			self:AddButton( "EMS UPGRADE LEVEL " .. i, function( btn )
 				-- change engine level to i.
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateEnginePanel( i )
@@ -301,12 +301,40 @@ function PANEL:CreateEnginePanel( equipped )
 	end
 end
 
-function PANEL:CreateUnderglowPanel( )
+function PANEL:CreateUnderglowPanel( equipped )
 	self:Reset( )
 
 	self:AddButton( "UNDERGLOW", function( )
 		self:CreateModificationPanel( )
 	end, 15, "<", true )
+
+	if equipped == 0 then
+		self:AddButton( "NO UNDERGLOW", function( ) end, 5, "EQUIPPED" )
+	else
+		self:AddButton( "NO UNDERGLOW", function( btn )
+			-- change underglow color to 0.
+			local current_hoverlerp = btn.hoverlerp
+			self:CreateUnderglowPanel( 0 )
+			self.Elements[ 2 ].hoverlerp = current_hoverlerp
+		end, 5, DarkRP.formatMoney( 0 ) )
+	end
+
+	for k, v in pairs( AutoBodyNPC.Config.GlobalUnderglowSettings ) do
+		if k == equipped then
+			self:AddButton( v.name, function( ) end, 5, "EQUIPPED" )
+		else
+			local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
+			local price = config_custom_cars and config_custom_cars.underglow and config_custom_cars.underglow[ v.name ] or v.price
+			price = DarkRP.formatMoney( price )
+
+			self:AddButton( v.name, function( btn )
+				-- change underglow to be v.color.
+				local current_hoverlerp = btn.hoverlerp
+				self:CreateUnderglowPanel( k )
+				self.Elements[ k + 2 ].hoverlerp = current_hoverlerp
+			end, 5, price )
+		end
+	end
 end
 
 function PANEL:CreateModificationPanel( name )
@@ -337,7 +365,7 @@ function PANEL:CreateModificationPanel( name )
 	end )
 
 	self:AddButton( "UNDERGLOW", function( )
-		self:CreateUnderglowPanel( )
+		self:CreateUnderglowPanel( self.ActiveVehicle:GetNWInt( "UnderglowColor" ) )
 	end )
 end
 
