@@ -190,13 +190,13 @@ function PANEL:CreateSkinsPanel( equipped ) -- Desync the equipped from the serv
 	end, 15, "<", true )
 
 	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
-	local price = "$" .. ( config_custom_cars and config_custom_cars.skin or AutoBodyNPC.Config.GlobalSkinPrice )
+	local price = DarkRP.formatMoney( config_custom_cars and config_custom_cars.skin or AutoBodyNPC.Config.GlobalSkinPrice )
 
 	for i = 0, self.ActiveVehicle:SkinCount( ) - 1 do
 		if i == equipped then
-			self:AddButton( "Skin " .. i, function( ) end, 5, "Equipped" )
+			self:AddButton( "Skin " .. i + 1, function( ) end, 5, "Equipped" )
 		else
-			self:AddButton( "Skin " .. i, function( )
+			self:AddButton( "Skin " .. i + 1, function( )
 				-- still need to set skin and buy.
 				self:CreateSkinsPanel( i )
 			end, 5, price )
@@ -213,22 +213,22 @@ function PANEL:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_option
 
 	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
 	local should_check_custom_bodygroup_price = config_custom_cars and config_custom_cars.bodygroup
-	local price = "$" .. AutoBodyNPC.Config.GlobalBodygroupPrice
+	local price = DarkRP.formatMoney( AutoBodyNPC.Config.GlobalBodygroupPrice )
 
 	for i = 0, num_options - 1 do
 		if i == equipped then
-			self:AddButton( "Option " .. i, function( ) end, 5, "Equipped" )
+			self:AddButton( "Option " .. i + 1, function( ) end, 5, "Equipped" )
 		else
 			local current_price
 
 			if should_check_custom_bodygroup_price then
 				current_price = config_custom_cars.bodygroup[ name ] and config_custom_cars.bodygroup[ name ][ i ]
-				current_price = current_price and "$" .. current_price
+				current_price = current_price and DarkRP.formatMoney( current_price )
 			end
 
 			current_price = current_price or price
 
-			self:AddButton( "Option " .. i, function( )
+			self:AddButton( "Option " .. i + 1, function( )
 				-- still need to set bodygroup and buy.
 				self:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_options, i )
 			end, 5, current_price )
