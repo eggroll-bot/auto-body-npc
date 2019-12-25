@@ -74,25 +74,25 @@ AutoBodyNPC.Config.CustomCars = {
 
 		[ "bodygroup" ] = { -- Price for bodygroup upgrades. Options will be different for each car. The options below are only specific to the Jeep Wrangler from TDM.
 			[ "bumperf" ] = { -- Price for front bumper customization.
-				[ 1 ] = 150, -- Option 1
-				[ 2 ] = 100, -- Option 2
-				[ 3 ] = 200 -- Option 3
+				[ 0 ] = 150, -- Option 0
+				[ 1 ] = 100, -- Option 1
+				[ 2 ] = 200 -- Option 2
 			},
 
 			[ "bumperr" ] = {
-				[ 1 ] = 200, -- Option 1
-				[ 2 ] = 300 -- Option 2
+				[ 0 ] = 200, -- Option 0
+				[ 1 ] = 300 -- Option 1
 			},
 
 			[ "hood" ] = { -- Price for hood customization.
-				[ 1 ] = 150, -- Option 1
-				[ 2 ] = 100, -- Option 2
-				[ 3 ] = 200 -- Option 3
+				[ 0 ] = 150, -- Option 0
+				[ 1 ] = 100, -- Option 1
+				[ 2 ] = 200 -- Option 2
 			},
 
 			[ "wheel" ] = {
-				[ 1 ] = 200, -- Option 1
-				[ 2 ] = 300 -- Option 2
+				[ 0 ] = 200, -- Option 0
+				[ 1 ] = 300 -- Option 1
 			}
 		},
 
@@ -115,25 +115,25 @@ AutoBodyNPC.Config.CustomCars = {
 
 		[ "bodygroup" ] = { -- Price for bodygroup upgrades. Options will be different for each car. The options below are only specific to the Jeep Wrangler from TDM.
 			[ "bumperf" ] = { -- Price for front bumper customization.
-				[ 1 ] = 150, -- Option 1
-				[ 2 ] = 100, -- Option 2
-				[ 3 ] = 200 -- Option 3
+				[ 0 ] = 150, -- Option 0
+				[ 1 ] = 100, -- Option 1
+				[ 2 ] = 200 -- Option 2
 			},
 
 			[ "bumperr" ] = {
-				[ 1 ] = 200, -- Option 1
-				[ 2 ] = 300 -- Option 2
+				[ 0 ] = 200, -- Option 0
+				[ 1 ] = 300 -- Option 1
 			},
 
 			[ "hood" ] = { -- Price for hood customization.
-				[ 1 ] = 150, -- Option 1
-				[ 2 ] = 100, -- Option 2
-				[ 3 ] = 200 -- Option 3
+				[ 0 ] = 150, -- Option 0
+				[ 1 ] = 100, -- Option 1
+				[ 2 ] = 200 -- Option 2
 			},
 
 			[ "wheel" ] = {
-				[ 1 ] = 200, -- Option 1
-				[ 2 ] = 300 -- Option 2
+				[ 0 ] = 200, -- Option 0
+				[ 1 ] = 300 -- Option 1
 			}
 		},
 
