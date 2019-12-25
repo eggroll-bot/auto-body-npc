@@ -14,6 +14,10 @@ AutoBodyNPC.Config.CarFindRadius = 500
 
 AutoBodyNPC.Config.GlobalResprayPrice = 750
 
+-- Price for a skin change for prices that haven't been explicitly defined for a specific car.
+
+AutoBodyNPC.Config.GlobalSkinPrice = 500
+
 -- Price for a bodygroup change for prices that haven't been explicitly defined for a specific car.
 
 AutoBodyNPC.Config.GlobalBodygroupPrice = 500
@@ -66,6 +70,7 @@ AutoBodyNPC.Config.BodygroupNames = {
 AutoBodyNPC.Config.CustomCars = {
 	[ "wranglertdm" ] = { -- Vehicle class name
 		[ "respray" ] = 1000, -- Price for a respray.
+		[ "skin" ] = 750, -- Price for a skin change.
 
 		[ "bodygroup" ] = { -- Price for bodygroup upgrades. Options will be different for each car. The options below are only specific to the Jeep Wrangler from TDM.
 			[ "bumperf" ] = { -- Price for front bumper customization.
@@ -106,6 +111,7 @@ AutoBodyNPC.Config.CustomCars = {
 AutoBodyNPC.Config.CustomCars = {
 	[ "wranglertdm" ] = { -- Vehicle class name
 		[ "respray" ] = 1000, -- Price for a respray.
+		[ "skin" ] = 750, -- Price for a skin change.
 
 		[ "bodygroup" ] = { -- Price for bodygroup upgrades. Options will be different for each car. The options below are only specific to the Jeep Wrangler from TDM.
 			[ "bumperf" ] = { -- Price for front bumper customization.
