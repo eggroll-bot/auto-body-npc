@@ -1,4 +1,5 @@
 surface.CreateFont( "Gratis", {
 	font = "GRATIS",
-	size = 36
+	size = 24,
+	weight = 500
 } )
