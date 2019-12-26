@@ -60,6 +60,13 @@ function PANEL:SetTitle( title )
 	self.Title = table.concat( exploded_title, " " )
 end
 
+function PANEL:CreateBackground( )
+	self.Background = vgui.Create( "DImage" )
+	self.Background:SetImage( "auto_body_npc/garage.jpg" )
+	self.Background:SetSize( ScrW( ), ScrH( ) )
+	self.Background:SetKeepAspect( true )
+end
+
 function PANEL:CreateCloseButton( )
 	self.CloseButton = vgui.Create( "AutoBodyNPCButton", self )
 	self.CloseButton:SetFont( "Gratis" )
@@ -69,6 +76,7 @@ function PANEL:CreateCloseButton( )
 	self.CloseButton:DockMargin( 0, 5, 0, 5 )
 
 	self.CloseButton.DoClick = function( )
+		self.Background:Remove( )
 		self:Remove( )
 	end
 end
@@ -161,10 +169,11 @@ end
 
 function PANEL:Init( )
 	self:SetSize( ScrW( ) * 0.275, ScrH( ) * 0.85 )
-	self:CenterHorizontal( 0.18 )
+	self:CenterHorizontal( 0.15 )
 	self:CenterVertical( )
 	self:MakePopup( )
 	self.Elements = { }
+	self:CreateBackground( )
 	self:CreateCloseButton( )
 	self:CreateTopBanner( )
 	self:CreateTitleBar( )
