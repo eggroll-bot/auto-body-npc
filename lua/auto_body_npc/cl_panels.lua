@@ -73,7 +73,9 @@ function PANEL:CreateCloseButton( )
 	self.CloseButton:SetText( "CLOSE" )
 	self.CloseButton:SetTextColor( Color( 255, 255, 255 ) )
 	self.CloseButton:Dock( BOTTOM )
-	self.CloseButton:DockMargin( 0, 5, 0, 5 )
+	self.CloseButton:DockMargin( 0, 5, 0, 0 )
+	self.CloseButton:SetTall( self.CloseButton:GetTall( ) + 10 )
+	self.CloseButton:SetContentAlignment( 5 )
 
 	self.CloseButton.DoClick = function( )
 		self.Background:Remove( )
@@ -168,8 +170,8 @@ function PANEL:GetBodygroupPrettyName( class )
 end
 
 function PANEL:Init( )
-	self:SetSize( ScrW( ) * 0.275, ScrH( ) * 0.85 )
-	self:CenterHorizontal( 0.15 )
+	self:SetSize( ScrW( ) * 0.24, ScrH( ) * 0.85 )
+	self:CenterHorizontal( 0.135 )
 	self:CenterVertical( )
 	self:MakePopup( )
 	self.Elements = { }
