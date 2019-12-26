@@ -1,3 +1,7 @@
+-- Enable automatic workshop downloading for this addon. If set to false, this will resource.AddFile the files for this addon automatically. Set this to false only if you have a FastDL setup.
+
+AutoBodyNPC.Config.UseWorkshop = true
+
 -- Name of the auto body shop.
 
 AutoBodyNPC.Config.Name = "BRYAN'S MOTORWORKS"
