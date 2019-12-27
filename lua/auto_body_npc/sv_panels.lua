@@ -64,7 +64,7 @@ local function UpdateVehicle( _, ply )
 		end
 
 		-- take money.
-		vehicle:SetNWInt( "UnderglowColor", k )
+		vehicle:SetNWInt( "UnderglowColor", underglow_id )
 		local color = AutoBodyNPC.Config.GlobalUnderglowSettings[ underglow_id ].color
 		-- apply underglow color.
 		-- save underglow to data.
