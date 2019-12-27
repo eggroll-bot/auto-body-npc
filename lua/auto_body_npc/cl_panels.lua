@@ -367,7 +367,7 @@ function PANEL:CreateUnderglowPanel( equipped )
 			price = DarkRP.formatMoney( price )
 
 			self:AddButton( v.name, function( btn )
-				-- change underglow to be v.color and buy.
+				-- change underglow to be k's color and buy.
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateUnderglowPanel( k )
 				self.Elements[ k + 2 ].hoverlerp = current_hoverlerp
