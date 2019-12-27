@@ -30,7 +30,7 @@ AutoBodyNPC.Config.GlobalBodygroupPrice = 500
 
 AutoBodyNPC.Config.GlobalEnginePrice = 1500
 
--- Prices for underglow for prices that haven't been explicitly defined for a specific car. Example is below.
+-- Prices for underglow for prices that haven't been explicitly defined for a specific car. Do not exceed 127 colors. Example is below.
 
 --[[
 
