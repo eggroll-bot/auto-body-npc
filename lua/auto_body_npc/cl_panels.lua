@@ -210,7 +210,14 @@ function PANEL:CreateResprayPanel( equipped )
 		local new_color = color_selector:GetColor( )
 
 		if new_color ~= equipped then
-			-- respray car with new_color and buy.
+			net.Start( "AutoBodyNPC_UpdateVehicle" )
+			net.WriteEntity( self:GetNPC( ) )
+			net.WriteEntity( self:GetActiveVehicle( ) )
+			net.WriteUInt( 1, 3 ) -- 1 = Respray.
+			net.WriteUInt( new_color.r, 8 )
+			net.WriteUInt( new_color.g, 8 )
+			net.WriteUInt( new_color.b, 8 )
+			net.SendToServer( )
 			local current_hoverlerp = btn.hoverlerp
 			self:CreateResprayPanel( new_color )
 			self.Elements[ 3 ].hoverlerp = current_hoverlerp -- Sets hoverlerp of the purchase button back to the original hoverlerp value.
@@ -238,7 +245,12 @@ function PANEL:CreateSkinsPanel( equipped ) -- Desync the equipped from the serv
 			self:AddButton( "SKIN " .. i + 1, function( ) end, 5, "EQUIPPED" )
 		else
 			self:AddButton( "SKIN " .. i + 1, function( btn )
-				-- still need to set skin and buy.
+				net.Start( "AutoBodyNPC_UpdateVehicle" )
+				net.WriteEntity( self:GetNPC( ) )
+				net.WriteEntity( self:GetActiveVehicle( ) )
+				net.WriteUInt( 2, 3 ) -- 2 = Skin.
+				net.WriteUInt( i, 8 )
+				net.SendToServer( )
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateSkinsPanel( i )
 				self.Elements[ i + 2 ].hoverlerp = current_hoverlerp
@@ -272,7 +284,13 @@ function PANEL:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_option
 			current_price = current_price or price
 
 			self:AddButton( "OPTION " .. i + 1, function( btn )
-				-- still need to set bodygroup and buy.
+				net.Start( "AutoBodyNPC_UpdateVehicle" )
+				net.WriteEntity( self:GetNPC( ) )
+				net.WriteEntity( self:GetActiveVehicle( ) )
+				net.WriteUInt( 3, 3 ) -- 3 = Bodygroup.
+				net.WriteUInt( bodygroup_id, 8 )
+				net.WriteUInt( i, 8 )
+				net.SendToServer( )
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_options, i )
 				self.Elements[ i + 2 ].hoverlerp = current_hoverlerp
@@ -315,7 +333,12 @@ function PANEL:CreateEnginePanel( equipped )
 		self:AddButton( "STOCK ENGINE", function( ) end, 5, "EQUIPPED" )
 	else
 		self:AddButton( "STOCK ENGINE", function( btn )
-			-- change engine level to 0.
+			net.Start( "AutoBodyNPC_UpdateVehicle" )
+			net.WriteEntity( self:GetNPC( ) )
+			net.WriteEntity( self:GetActiveVehicle( ) )
+			net.WriteUInt( 4, 3 ) -- 4 = Engine.
+			net.WriteUInt( 0, 3 )
+			net.SendToServer( )
 			local current_hoverlerp = btn.hoverlerp
 			self:CreateEnginePanel( 0 )
 			self.Elements[ 2 ].hoverlerp = current_hoverlerp
@@ -331,7 +354,12 @@ function PANEL:CreateEnginePanel( equipped )
 			local price = DarkRP.formatMoney( engine_price_multiplier * i )
 
 			self:AddButton( "EMS UPGRADE LEVEL " .. i, function( btn )
-				-- change engine level to i and buy.
+				net.Start( "AutoBodyNPC_UpdateVehicle" )
+				net.WriteEntity( self:GetNPC( ) )
+				net.WriteEntity( self:GetActiveVehicle( ) )
+				net.WriteUInt( 4, 3 ) -- 4 = Engine.
+				net.WriteUInt( i, 3 )
+				net.SendToServer( )
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateEnginePanel( i )
 				self.Elements[ i + 2 ].hoverlerp = current_hoverlerp
@@ -351,7 +379,12 @@ function PANEL:CreateUnderglowPanel( equipped )
 		self:AddButton( "NO UNDERGLOW", function( ) end, 5, "EQUIPPED" )
 	else
 		self:AddButton( "NO UNDERGLOW", function( btn )
-			-- change underglow color to 0.
+			net.Start( "AutoBodyNPC_UpdateVehicle" )
+			net.WriteEntity( self:GetNPC( ) )
+			net.WriteEntity( self:GetActiveVehicle( ) )
+			net.WriteUInt( 5, 3 ) -- 5 = Underglow.
+			net.WriteUInt( 0, 7 )
+			net.SendToServer( )
 			local current_hoverlerp = btn.hoverlerp
 			self:CreateUnderglowPanel( 0 )
 			self.Elements[ 2 ].hoverlerp = current_hoverlerp
@@ -367,7 +400,12 @@ function PANEL:CreateUnderglowPanel( equipped )
 			price = DarkRP.formatMoney( price )
 
 			self:AddButton( v.name, function( btn )
-				-- change underglow to be k's color and buy.
+				net.Start( "AutoBodyNPC_UpdateVehicle" )
+				net.WriteEntity( self:GetNPC( ) )
+				net.WriteEntity( self:GetActiveVehicle( ) )
+				net.WriteUInt( 5, 3 ) -- 5 = Underglow.
+				net.WriteUInt( k, 7 )
+				net.SendToServer( )
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateUnderglowPanel( k )
 				self.Elements[ k + 2 ].hoverlerp = current_hoverlerp
