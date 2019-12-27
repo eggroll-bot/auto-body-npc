@@ -13,3 +13,11 @@ hook.Add( "CanProperty", "AutoBodyNPC_CanCustomizeProperties", function( ply, pr
 		return false
 	end
 end )
+
+hook.Add( "CanTool", "AutoBodyNPC_DisableColorToolOnVehicles", function( ply, tr, tool )
+	if tool == "colour" and tr.Entity:IsVehicle( ) then
+		DarkRP.notify( ply, NOTIFY_ERROR, 4, "You need to customize the vehicle in the auto body shop." )
+
+		return false
+	end
+end )
