@@ -187,12 +187,40 @@ function PANEL:Paint( w, h )
 	surface.DrawRect( 0, 0, w, h )
 end
 
-function PANEL:CreateResprayPanel( )
+function PANEL:CreateResprayPanel( equipped )
 	self:Reset( )
 
 	self:AddButton( "RESPRAY", function( )
 		self:CreateModificationPanel( )
 	end, 15, "<", true )
+
+	local color_selector = vgui.Create( "DColorMixer" )
+	color_selector:SetTall( 0.3 * self:GetTall( ) )
+	color_selector:Dock( TOP )
+	color_selector:DockMargin( 10, 5, 10, 15 )
+	color_selector:SetPalette( false )
+	color_selector:SetAlphaBar( false )
+	color_selector:SetColor( equipped )
+	self.ContentScrollPanel:AddItem( color_selector )
+	table.insert( self.Elements, color_selector )
+	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
+	local price = DarkRP.formatMoney( config_custom_cars and config_custom_cars.respray or AutoBodyNPC.Config.GlobalResprayPrice )
+
+	self:AddButton( "Purchase - " .. price, function( btn )
+		local new_color = color_selector:GetColor( )
+
+		if new_color ~= equipped then
+			-- respray car with new_color and buy.
+			local current_hoverlerp = btn.hoverlerp
+			self:CreateResprayPanel( new_color )
+			self.Elements[ 3 ].hoverlerp = current_hoverlerp -- Sets hoverlerp of the purchase button back to the original hoverlerp value.
+			notification.AddLegacy( "You purchased a respray for " .. price .. ".", NOTIFY_GENERIC, 2 )
+		else
+			notification.AddLegacy( "You need to modify the color before respraying.", NOTIFY_ERROR, 2 )
+		end
+	end, 0, "", true )
+
+	self.Elements[ 3 ]:SetContentAlignment( 5 ) -- self.Elements[ 3 ] is the purchase button.
 end
 
 function PANEL:CreateSkinsPanel( equipped ) -- Desync the equipped from the server.
@@ -303,7 +331,7 @@ function PANEL:CreateEnginePanel( equipped )
 			local price = DarkRP.formatMoney( engine_price_multiplier * i )
 
 			self:AddButton( "EMS UPGRADE LEVEL " .. i, function( btn )
-				-- change engine level to i.
+				-- change engine level to i and buy.
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateEnginePanel( i )
 				self.Elements[ i + 2 ].hoverlerp = current_hoverlerp
@@ -339,7 +367,7 @@ function PANEL:CreateUnderglowPanel( equipped )
 			price = DarkRP.formatMoney( price )
 
 			self:AddButton( v.name, function( btn )
-				-- change underglow to be v.color.
+				-- change underglow to be v.color and buy.
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateUnderglowPanel( k )
 				self.Elements[ k + 2 ].hoverlerp = current_hoverlerp
@@ -360,7 +388,7 @@ function PANEL:CreateModificationPanel( name )
 	end, 15, "<", true )
 
 	self:AddButton( "RESPRAY", function( )
-		self:CreateResprayPanel( )
+		self:CreateResprayPanel( self.ActiveVehicle:GetColor( ) )
 	end )
 
 	self:AddButton( "SKINS", function( )
