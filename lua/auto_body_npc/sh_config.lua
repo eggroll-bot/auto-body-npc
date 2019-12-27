@@ -12,7 +12,7 @@ AutoBodyNPC.Config.Model = "models/eli.mdl"
 
 -- Radius to find cars that the player owns.
 
-AutoBodyNPC.Config.CarFindRadius = 500
+AutoBodyNPC.Config.CarFindRadius = 512
 
 -- Price for a respray for prices that haven't been explicitly defined for a specific car.
 
