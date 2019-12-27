@@ -203,7 +203,7 @@ function PANEL:CreateResprayPanel( equipped )
 	color_selector:SetColor( equipped )
 	self.ContentScrollPanel:AddItem( color_selector )
 	table.insert( self.Elements, color_selector )
-	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
+	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self:GetActiveVehicle( ):GetVehicleClass( ) ]
 	local price = DarkRP.formatMoney( config_custom_cars and config_custom_cars.respray or AutoBodyNPC.Config.GlobalResprayPrice )
 
 	self:AddButton( "Purchase - " .. price, function( btn )
@@ -230,10 +230,10 @@ function PANEL:CreateSkinsPanel( equipped ) -- Desync the equipped from the serv
 		self:CreateModificationPanel( )
 	end, 15, "<", true )
 
-	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
+	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self:GetActiveVehicle( ):GetVehicleClass( ) ]
 	local price = DarkRP.formatMoney( config_custom_cars and config_custom_cars.skin or AutoBodyNPC.Config.GlobalSkinPrice )
 
-	for i = 0, self.ActiveVehicle:SkinCount( ) - 1 do
+	for i = 0, self:GetActiveVehicle( ):SkinCount( ) - 1 do
 		if i == equipped then
 			self:AddButton( "SKIN " .. i + 1, function( ) end, 5, "EQUIPPED" )
 		else
@@ -254,7 +254,7 @@ function PANEL:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_option
 		self:CreateBodygroupsPanel( )
 	end, 15, "<", true )
 
-	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
+	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self:GetActiveVehicle( ):GetVehicleClass( ) ]
 	local should_check_custom_bodygroup_price = config_custom_cars and config_custom_cars.bodygroup
 	local price = DarkRP.formatMoney( AutoBodyNPC.Config.GlobalBodygroupPrice )
 
@@ -288,7 +288,7 @@ function PANEL:CreateBodygroupsPanel( )
 		self:CreateModificationPanel( )
 	end, 15, "<", true )
 
-	local bodygroups = self.ActiveVehicle:GetBodyGroups( )
+	local bodygroups = self:GetActiveVehicle( ):GetBodyGroups( )
 
 	for _, v in pairs( bodygroups ) do
 		if v.num <= 1 then -- Apparently bodygroups with only one option exist.
@@ -296,7 +296,7 @@ function PANEL:CreateBodygroupsPanel( )
 		end
 
 		local pretty_bodygroup_name = self:GetBodygroupPrettyName( v.name )
-		local active_bodygroup = self.ActiveVehicle:GetBodygroup( v.id )
+		local active_bodygroup = self:GetActiveVehicle( ):GetBodygroup( v.id )
 
 		self:AddButton( pretty_bodygroup_name, function( )
 			self:CreateBodygroupPanel( v.id, v.name, pretty_bodygroup_name, v.num, active_bodygroup )
@@ -326,7 +326,7 @@ function PANEL:CreateEnginePanel( equipped )
 		if i == equipped then
 			self:AddButton( "EMS UPGRADE LEVEL " .. i, function( ) end, 5, "EQUIPPED" )
 		else
-			local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
+			local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self:GetActiveVehicle( ):GetVehicleClass( ) ]
 			local engine_price_multiplier = config_custom_cars and config_custom_cars.engine or AutoBodyNPC.Config.GlobalEnginePrice
 			local price = DarkRP.formatMoney( engine_price_multiplier * i )
 
@@ -362,7 +362,7 @@ function PANEL:CreateUnderglowPanel( equipped )
 		if k == equipped then
 			self:AddButton( v.name, function( ) end, 5, "EQUIPPED" )
 		else
-			local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self.ActiveVehicle:GetVehicleClass( ) ]
+			local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self:GetActiveVehicle( ):GetVehicleClass( ) ]
 			local price = config_custom_cars and config_custom_cars.underglow and config_custom_cars.underglow[ v.name ] or v.price
 			price = DarkRP.formatMoney( price )
 
@@ -388,11 +388,11 @@ function PANEL:CreateModificationPanel( name )
 	end, 15, "<", true )
 
 	self:AddButton( "RESPRAY", function( )
-		self:CreateResprayPanel( self.ActiveVehicle:GetColor( ) )
+		self:CreateResprayPanel( self:GetActiveVehicle( ):GetColor( ) )
 	end )
 
 	self:AddButton( "SKINS", function( )
-		self:CreateSkinsPanel( self.ActiveVehicle:GetSkin( ) )
+		self:CreateSkinsPanel( self:GetActiveVehicle( ):GetSkin( ) )
 	end )
 
 	self:AddButton( "BODYGROUPS", function( )
@@ -400,11 +400,11 @@ function PANEL:CreateModificationPanel( name )
 	end )
 
 	self:AddButton( "ENGINE", function( )
-		self:CreateEnginePanel( self.ActiveVehicle:GetNWInt( "EngineLevel" ) )
+		self:CreateEnginePanel( self:GetActiveVehicle( ):GetNWInt( "EngineLevel" ) )
 	end )
 
 	self:AddButton( "UNDERGLOW", function( )
-		self:CreateUnderglowPanel( self.ActiveVehicle:GetNWInt( "UnderglowColor" ) )
+		self:CreateUnderglowPanel( self:GetActiveVehicle( ):GetNWInt( "UnderglowColor" ) )
 	end )
 end
 
@@ -413,14 +413,22 @@ function PANEL:PopulateCars( )
 	self.ActiveCar = nil
 	self:SetTitle( "SELECT A CAR" )
 
-	for _, v in pairs( self.CarTable ) do
+	for _, v in pairs( self:GetCarTable( ) ) do
 		local name = v:VC_getName( )
 
 		self:AddButton( name, function( )
-			self.ActiveVehicle = v
+			self:SetActiveVehicle( v )
 			self:CreateModificationPanel( name )
 		end, 5, "", true )
 	end
+end
+
+function PANEL:GetNPC( )
+	return self.NPC
+end
+
+function PANEL:SetNPC( npc )
+	self.NPC = npc
 end
 
 function PANEL:GetCarTable( )
@@ -429,6 +437,14 @@ end
 
 function PANEL:SetCarTable( cars )
 	self.CarTable = cars
+end
+
+function PANEL:GetActiveVehicle( )
+	return self.ActiveVehicle
+end
+
+function PANEL:SetActiveVehicle( vehicle )
+	self.ActiveVehicle = vehicle
 end
 
 vgui.Register( "AutoBodyNPCPanel", PANEL, "DPanel" )

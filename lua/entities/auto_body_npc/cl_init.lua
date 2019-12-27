@@ -28,6 +28,7 @@ net.Receive( "AutoBodyNPC_OpenGUI", function( )
 	end
 
 	local auto_body_npc_panel = vgui.Create( "AutoBodyNPCPanel" )
+	auto_body_npc_panel:SetNPC( npc )
 	auto_body_npc_panel:SetCarTable( cars )
 	auto_body_npc_panel:PopulateCars( )
 end )
