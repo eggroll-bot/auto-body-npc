@@ -21,9 +21,11 @@ local function UpdateVehicle( _, ply )
 		color.r = net.ReadUInt( 8 ) -- 8-bit unsigned integers can only go from 0-255.
 		color.g = net.ReadUInt( 8 )
 		color.b = net.ReadUInt( 8 )
-		-- take money.
+		local config_custom_cars = AutoBodyNPC.Config.CustomCars[ vehicle:GetVehicleClass( ) ]
+		local price = config_custom_cars and config_custom_cars.respray or AutoBodyNPC.Config.GlobalResprayPrice
+		ply:addMoney( -price )
 		vehicle:SetColor( color )
-		-- save color to data.
+		vehicle:SaveRespray( color )
 	elseif to_change == 2 then -- Skin
 		local skin_index = net.ReadUInt( 8 )
 
@@ -31,9 +33,11 @@ local function UpdateVehicle( _, ply )
 			return
 		end
 
-		-- take money.
+		local config_custom_cars = AutoBodyNPC.Config.CustomCars[ vehicle:GetVehicleClass( ) ]
+		local price = config_custom_cars and config_custom_cars.skin or AutoBodyNPC.Config.GlobalSkinPrice
+		ply:addMoney( -price )
 		vehicle:SetSkin( skin_index )
-		-- save skin to data.
+		vehicle:SaveSkin( skin_index )
 	elseif to_change == 3 then -- Bodygroup
 		local bodygroup_id = net.ReadUInt( 8 )
 		local bodygroup_value = net.ReadUInt( 8 )
@@ -42,9 +46,16 @@ local function UpdateVehicle( _, ply )
 			return
 		end
 
-		-- take money.
+		local bodygroup_name = vehicle:GetBodygroupName( bodygroup_id )
+		local config_custom_cars = AutoBodyNPC.Config.CustomCars[ vehicle:GetVehicleClass( ) ]
+		local price = config_custom_cars -- This conditional screwfest checks if the bodygroup's custom pricing exists.
+						and config_custom_cars.bodygroup
+						and config_custom_cars.bodygroup[ bodygroup_name ]
+						and config_custom_cars.bodygroup[ bodygroup_name ][ bodygroup_value ]
+						or AutoBodyNPC.Config.GlobalBodygroupPrice -- If not, then default to the global price.
+		ply:addMoney( -price )
 		vehicle:SetBodygroup( bodygroup_id, bodygroup_value )
-		-- save bodygroup to data.
+		vehicle:SaveBodygroup( bodygroup_id, bodygroup_value )
 	elseif to_change == 4 then -- Engine
 		local engine_level = net.ReadUInt( 3 )
 
@@ -52,10 +63,15 @@ local function UpdateVehicle( _, ply )
 			return
 		end
 
-		-- take money.
-		vehicle:SetNWInt( "EngineLevel", engine_level )
-		-- apply engine modifications.
-		-- save engine to data.
+		if engine_level ~= 0 then -- Even though an engine_level of 0 would result in 0, it would be unnecessary CPU time.
+			local config_custom_cars = AutoBodyNPC.Config.CustomCars[ vehicle:GetVehicleClass( ) ]
+			local engine_price_multiplier = config_custom_cars and config_custom_cars.engine or AutoBodyNPC.Config.GlobalEnginePrice
+			local price = engine_price_multiplier * engine_level
+			ply:addMoney( -price )
+		end
+
+		vehicle:SetEngineLevel( engine_level )
+		vehicle:SaveEngineLevel( engine_level )
 	elseif to_change == 5 then -- Underglow
 		local underglow_id = net.ReadUInt( 7 )
 
@@ -63,11 +79,15 @@ local function UpdateVehicle( _, ply )
 			return
 		end
 
-		-- take money.
-		vehicle:SetNWInt( "UnderglowColor", underglow_id )
-		local color = AutoBodyNPC.Config.GlobalUnderglowSettings[ underglow_id ].color
-		-- apply underglow color.
-		-- save underglow to data.
+		local config_custom_cars = AutoBodyNPC.Config.CustomCars[ vehicle:GetVehicleClass( ) ]
+		local underglow_table = AutoBodyNPC.Config.GlobalUnderglowSettings[ underglow_id ]
+		local price = config_custom_cars
+						and config_custom_cars.underglow
+						and config_custom_cars.underglow[ underglow_table.name ]
+						or underglow_table.price
+		ply:addMoney( -price )
+		vehicle:SetUnderglowID( underglow_id )
+		vehicle:SaveUnderglowID( underglow_id )
 	end
 end
 
