@@ -254,6 +254,7 @@ function PANEL:CreateSkinsPanel( equipped ) -- Desync the equipped from the serv
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateSkinsPanel( i )
 				self.Elements[ i + 2 ].hoverlerp = current_hoverlerp
+				notification.AddLegacy( "You purchased a skin change for " .. price .. ".", NOTIFY_GENERIC, 2 )
 			end, 5, price )
 		end
 	end
@@ -294,6 +295,7 @@ function PANEL:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_option
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_options, i )
 				self.Elements[ i + 2 ].hoverlerp = current_hoverlerp
+				notification.AddLegacy( "You purchased a bodygroup change for " .. price .. ".", NOTIFY_GENERIC, 2 )
 			end, 5, current_price )
 		end
 	end
@@ -342,6 +344,7 @@ function PANEL:CreateEnginePanel( equipped )
 			local current_hoverlerp = btn.hoverlerp
 			self:CreateEnginePanel( 0 )
 			self.Elements[ 2 ].hoverlerp = current_hoverlerp
+			notification.AddLegacy( "You reverted back to the stock engine.", NOTIFY_GENERIC, 2 )
 		end, 5, DarkRP.formatMoney( 0 ) )
 	end
 
@@ -363,6 +366,7 @@ function PANEL:CreateEnginePanel( equipped )
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateEnginePanel( i )
 				self.Elements[ i + 2 ].hoverlerp = current_hoverlerp
+				notification.AddLegacy( "You purchased an engine upgrade for " .. price .. ".", NOTIFY_GENERIC, 2 )
 			end, 5, price )
 		end
 	end
@@ -388,6 +392,7 @@ function PANEL:CreateUnderglowPanel( equipped )
 			local current_hoverlerp = btn.hoverlerp
 			self:CreateUnderglowPanel( 0 )
 			self.Elements[ 2 ].hoverlerp = current_hoverlerp
+			notification.AddLegacy( "You reverted back to having no underglow.", NOTIFY_GENERIC, 2 )
 		end, 5, DarkRP.formatMoney( 0 ) )
 	end
 
@@ -409,6 +414,7 @@ function PANEL:CreateUnderglowPanel( equipped )
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateUnderglowPanel( k )
 				self.Elements[ k + 2 ].hoverlerp = current_hoverlerp
+				notification.AddLegacy( "You purchased an underglow upgrade for " .. price .. ".", NOTIFY_GENERIC, 2 )
 			end, 5, price )
 		end
 	end
