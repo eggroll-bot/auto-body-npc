@@ -1,8 +1,42 @@
 hook.Add( "VC_CD_spawnedVehicle", "AutoBodyNPC_SpawnVehicle", function( ply, vehicle, test_drive ) -- We're going to interact as little as we can with VCMod because their API is terrible and most of the documentation sucks.
 	if not test_drive then
 		vehicle:SetNWEntity( "VCModOwner", ply )
-		-- set bodygroups, color, skin, underglow, and engine upgrades, if any. For engine upgrades, set the vehicle's NWInt "EngineLevel" to 0-4. 0 being stock, 1-4 being EMS upgrades. For underglow upgrades, set the vehicle's NWInt "UnderglowColor" to be the key for each color in the config file, if any, otherwise don't set it.
-		vehicle:SetNWInt( "EngineLevel", 0 ) -- Set it to 0 for now.
+		local file_name = "auto_body_npc/ply_data/" .. ply:SteamID64( ) .. ".txt"
+
+		if not file.Exists( file_name, "DATA" ) then
+			return
+		end
+
+		local vcmod_id = vehicle.VC_CD_ID
+		local ply_vehicle_data = util.JSONToTable( file.Read( "auto_body_npc/ply_data/" .. ply:SteamID64( ) .. ".txt" ) )
+		local vehicle_data = ply_vehicle_data[ vcmod_id ]
+		local color = vehicle_data.Color
+		local skin = vehicle_data.Skin
+		local bodygroups = vehicle_data.Bodygroups
+		local engine_level = vehicle_data.EngineLevel
+		local underglow_id = vehicle_data.UnderglowID
+
+		if color then
+			vehicle:SetColor( color )
+		end
+
+		if skin then
+			vehicle:SetSkin( skin )
+		end
+
+		if bodygroups then
+			for bodygroup_id, bodygroup_value in pairs( bodygroups ) do
+				vehicle:SetBodygroup( bodygroup_id, bodygroup_value )
+			end
+		end
+
+		if engine_level then
+			vehicle:SetEngineLevel( engine_level )
+		end
+
+		if underglow_id then
+			vehicle:SetUnderglowID( underglow_id )
+		end
 	end
 end )
 
