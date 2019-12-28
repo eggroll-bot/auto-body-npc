@@ -10,6 +10,11 @@ hook.Add( "VC_CD_spawnedVehicle", "AutoBodyNPC_SpawnVehicle", function( ply, veh
 		local vcmod_id = vehicle.VC_CD_ID
 		local ply_vehicle_data = util.JSONToTable( file.Read( "auto_body_npc/ply_data/" .. ply:SteamID64( ) .. ".txt" ) )
 		local vehicle_data = ply_vehicle_data[ vcmod_id ]
+
+		if not vehicle_data then
+			return
+		end
+
 		local color = vehicle_data.Color
 		local skin = vehicle_data.Skin
 		local bodygroups = vehicle_data.Bodygroups
