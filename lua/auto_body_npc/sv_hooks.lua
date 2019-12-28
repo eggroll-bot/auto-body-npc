@@ -7,7 +7,7 @@ hook.Add( "VC_CD_spawnedVehicle", "AutoBodyNPC_SpawnVehicle", function( ply, veh
 end )
 
 hook.Add( "VC_CD_playerSoldVehicle", "AutoBodyNPC_SoldVehicle", function( ply, vcmod_id )
-	-- remove all mods from file.
+	-- remove all mods for that vehicle from file. if file empty, remove file.
 end )
 
 hook.Add( "CanProperty", "AutoBodyNPC_CanCustomizeProperties", function( ply, property, ent )
