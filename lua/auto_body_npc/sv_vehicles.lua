@@ -6,6 +6,6 @@ function vehicle_meta:SetEngineLevel( engine_level )
 end
 
 function vehicle_meta:SetUnderglowID( id )
-	self:SetNWInt( "UnderglowColor", engine_level )
+	self:SetNWInt( "UnderglowColor", id )
 	-- apply underglow.
 end
