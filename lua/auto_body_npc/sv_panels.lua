@@ -63,7 +63,7 @@ local function UpdateVehicle( _, ply )
 			return
 		end
 
-		if engine_level ~= 0 then -- Even though an engine_level of 0 would result in 0, it would be unnecessary CPU time.
+		if engine_level ~= 0 then
 			local config_custom_cars = AutoBodyNPC.Config.CustomCars[ vehicle:GetVehicleClass( ) ]
 			local engine_price_multiplier = config_custom_cars and config_custom_cars.engine or AutoBodyNPC.Config.GlobalEnginePrice
 			local price = engine_price_multiplier * engine_level
@@ -79,13 +79,16 @@ local function UpdateVehicle( _, ply )
 			return
 		end
 
-		local config_custom_cars = AutoBodyNPC.Config.CustomCars[ vehicle:GetVehicleClass( ) ]
-		local underglow_table = AutoBodyNPC.Config.GlobalUnderglowSettings[ underglow_id ]
-		local price = config_custom_cars
-						and config_custom_cars.underglow
-						and config_custom_cars.underglow[ underglow_table.name ]
-						or underglow_table.price
-		ply:addMoney( -price )
+		if underglow_id ~= 0 then
+			local config_custom_cars = AutoBodyNPC.Config.CustomCars[ vehicle:GetVehicleClass( ) ]
+			local underglow_table = AutoBodyNPC.Config.GlobalUnderglowSettings[ underglow_id ]
+			local price = config_custom_cars
+							and config_custom_cars.underglow
+							and config_custom_cars.underglow[ underglow_table.name ]
+							or underglow_table.price
+			ply:addMoney( -price )
+		end
+
 		vehicle:SetUnderglowID( underglow_id )
 		vehicle:SaveUnderglowID( underglow_id )
 	end
