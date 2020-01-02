@@ -12,12 +12,11 @@ function ENT:Think( )
 			dlight.pos = self:GetPos( )
 			dlight.brightness = 6
 			dlight.size = 120
-			dlight.decay = 1000
 			dlight.r = red
 			dlight.g = green
 			dlight.b = blue
 			dlight.nomodel = true
-			dlight.dietime = CurTime( ) + 1
+			dlight.dietime = CurTime( ) + FrameTime( )
 		end
 	end
 end
