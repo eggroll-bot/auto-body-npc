@@ -111,6 +111,7 @@ function PANEL:CreateContentScrollPanel( )
 	self.ContentScrollPanel:GetVBar( ):SetSize( self:GetWide( ) * 0.01, 0 )
 	self.ContentScrollPanel:GetVBar( ):SetHideButtons( true )
 	self.ContentScrollPanel:GetVBar( ).Paint = function( ) end
+
 	self.ContentScrollPanel:GetVBar( ).btnGrip.Paint = function( _, w, h )
 		surface.SetDrawColor( Color( 50, 50, 50 ) )
 		surface.DrawRect( 0, 0, w, h )
