@@ -22,7 +22,7 @@ function vehicle_meta:SetUnderglowID( id )
 
 	local color = AutoBodyNPC.Config.GlobalUnderglowSettings[ id ].color
 	self.Underglow = ents.Create( "vehicle_underglow" )
-	self.Underglow:SetPos( self:GetPos( Vector( 0, 0, -10 ) ) )
+	self.Underglow:SetPos( self:GetPos( ) )
 	self.Underglow:SetAngles( self:GetAngles( ) )
 	self.Underglow:SetParent( self )
 	self.Underglow:Spawn( )
