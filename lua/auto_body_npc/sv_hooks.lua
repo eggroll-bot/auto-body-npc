@@ -1,6 +1,7 @@
 hook.Add( "VC_CD_spawnedVehicle", "AutoBodyNPC_SpawnVehicle", function( ply, vehicle, test_drive ) -- We're going to interact as little as we can with VCMod because their API is terrible and most of the documentation sucks.
 	if not test_drive then
 		vehicle:SetNWEntity( "VCModOwner", ply )
+		vehicle.VCModOriginalMaxHealth = vehicle:VC_getHealthMax( )
 		local file_name = "auto_body_npc/ply_data/" .. ply:SteamID64( ) .. ".txt"
 
 		if not file.Exists( file_name, "DATA" ) then

@@ -3,8 +3,9 @@ local vehicle_meta = FindMetaTable( "Vehicle" )
 function vehicle_meta:SetEngineLevel( engine_level )
 	self:SetNWInt( "EngineLevel", engine_level )
 	self:SetMaxThrottle( 1 + engine_level * 0.1 )
-	self:VC_setHealthMax( self:VC_getHealthMax( ) * ( 1 + 0.2 * engine_level ) )
-	self:VC_setHealth( self:VC_getHealth( false ) * ( 1 + 0.2 * engine_level ) )
+	local current_health_percentage = self:VC_getHealth( false ) / self:VC_getHealthMax( ) -- We're using this, instead of the provided percentage health function because the percentage health function uses whole percentages only.
+	self:VC_setHealthMax( self.VCModOriginalMaxHealth * ( 1 + 0.2 * engine_level ) )
+	self:VC_setHealth( current_health_percentage * self:VC_getHealthMax( ) )
 end
 
 function vehicle_meta:SetUnderglowID( id )
