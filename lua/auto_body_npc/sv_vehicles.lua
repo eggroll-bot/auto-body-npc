@@ -10,11 +10,12 @@ end
 function vehicle_meta:SetUnderglowID( id )
 	self:SetNWInt( "UnderglowColor", id )
 
-	if id == 0 then
-		if self.Underglow then
-			self.Underglow:Remove( )
-		end
+	if self.Underglow then
+		self.Underglow:Remove( )
+		self.Underglow = nil
+	end
 
+	if id == 0 then
 		return
 	end
 
