@@ -46,10 +46,6 @@ hook.Add( "VC_CD_spawnedVehicle", "AutoBodyNPC_SpawnVehicle", function( ply, veh
 	end
 end )
 
-hook.Add( "VC_CD_playerSoldVehicle", "AutoBodyNPC_SoldVehicle", function( ply, vcmod_id )
-	-- remove all mods for that vehicle from file. if file empty, remove file.
-end )
-
 hook.Add( "CanProperty", "AutoBodyNPC_CanCustomizeProperties", function( ply, property, ent )
 	if IsValid( ent:GetNWEntity( "VCModOwner" ) ) and ( property == "skin" or property == "bodygroups" ) then -- Vehicle is from VCMod.
 		DarkRP.notify( ply, NOTIFY_ERROR, 4, "You need to customize the vehicle in the auto body shop." )
