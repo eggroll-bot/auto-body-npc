@@ -585,10 +585,11 @@ function PANEL:PopulateCars( )
 	hook.Remove( "EntityRemoved", "AutoBodyNPC_VehicleRemoved" )
 	self:SetTitle( "SELECT A CAR" )
 
-	local entities = ents.FindInSphere( self:GetNPC( ):GetPos( ), AutoBodyNPC.Config.CarFindRadius )
+	local npc_pos = self:GetNPC( ):GetPos( )
+	local entities = ents.FindInSphere( npc_pos, AutoBodyNPC.Config.CarFindRadius + 100 ) -- Add 100 for a broader search.
 
 	for _, v in pairs( entities ) do
-		if not v:IsVehicle( ) or v:GetNWEntity( "VCModOwner" ) ~= LocalPlayer( ) then
+		if not v:IsVehicle( ) or v:GetNWEntity( "VCModOwner" ) ~= LocalPlayer( ) or npc_pos:DistToSqr( v:GetPos( ) ) > ( AutoBodyNPC.Config.CarFindRadius + 100 ) ^ 2 then -- Use the same distance formula for consistency and accuracy.
 			continue
 		end
 
