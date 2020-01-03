@@ -5,7 +5,7 @@ local function UpdateVehicle( _, ply )
 	local vehicle = net.ReadEntity( )
 	local to_change = net.ReadUInt( 3 ) -- 1 = respray, 2 = skin, 3 = bodygroup, 4 = engine, 5 = underglow
 
-	if not IsValid( npc ) or not IsValid( vehicle ) then
+	if not isentity( npc ) or not isentity( vehicle ) or npc:GetClass( ) ~= "auto_body_npc" or not vehicle:IsVehicle( ) or vehicle:GetNWEntity( "VCModOwner" ) ~= ply then
 		return
 	end
 

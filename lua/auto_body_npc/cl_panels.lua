@@ -153,6 +153,7 @@ function PANEL:CreateCloseButton( )
 		self.Background:Remove( )
 		self.VehiclePreview:Remove( )
 		self:Remove( )
+		hook.Remove( "EntityRemoved", "AutoBodyNPC_VehicleRemoved" )
 	end
 end
 
@@ -546,14 +547,30 @@ end
 function PANEL:PopulateCars( )
 	self:Reset( )
 	self:SetActiveVehicle( nil )
+	hook.Remove( "EntityRemoved", "AutoBodyNPC_VehicleRemoved" )
 	self:SetTitle( "SELECT A CAR" )
 
-	for _, v in pairs( self:GetCarTable( ) ) do
+	local entities = ents.FindInSphere( self:GetNPC( ):GetPos( ), AutoBodyNPC.Config.CarFindRadius )
+
+	for _, v in pairs( entities ) do
+		if not v:IsVehicle( ) or v:GetNWEntity( "VCModOwner" ) ~= LocalPlayer( ) then
+			continue
+		end
+
 		local name = v:VC_getName( )
 
 		self:AddButton( name, function( )
 			self:SetActiveVehicle( v )
 			self:CreateModificationPanel( name )
+
+			hook.Add( "EntityRemoved", "AutoBodyNPC_VehicleRemoved", function( ent )
+				if ent == self:GetActiveVehicle( ) then
+					timer.Simple( 0, function( ) -- Wait a frame for it to be removed.
+						self:PopulateCars( )
+						hook.Remove( "EntityRemoved", "AutoBodyNPC_VehicleRemoved" )
+					end )
+				end
+			end )
 		end, 5, "", true )
 	end
 end
@@ -564,14 +581,6 @@ end
 
 function PANEL:SetNPC( npc )
 	self.NPC = npc
-end
-
-function PANEL:GetCarTable( )
-	return self.CarTable
-end
-
-function PANEL:SetCarTable( cars )
-	self.CarTable = cars
 end
 
 function PANEL:GetActiveVehicle( )
