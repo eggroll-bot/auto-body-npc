@@ -194,12 +194,47 @@ end
 
 function PANEL:CreateVehiclePreview( )
 	self.VehiclePreview = vgui.Create( "DModelPanel" )
-	self.VehiclePreview:SetPos( ScrW( ) * 0.322, ScrH( ) * 0.3 )
-	self.VehiclePreview:SetSize( ScrW( ) * 0.5, ScrH( ) * 0.75 )
+	self.VehiclePreview:SetPos( ScrW( ) * 0.272, ScrH( ) * 0.3 )
+	self.VehiclePreview:SetSize( ScrW( ) * 0.6, ScrH( ) * 0.75 )
 	self.VehiclePreview:SetModel( "models/props_borealis/bluebarrel001.mdl" ) -- Temporary model. Just so it doesn't complain.
 	self.VehiclePreview:SetFOV( 45 )
-	self.VehiclePreview:SetCursor( "arrow" )
 	self.VehiclePreview.LayoutEntity = function( ) end
+	local x, y = self.VehiclePreview:GetPos( )
+	local w, h = self.VehiclePreview:GetSize( )
+	local center_x, center_y = x + w / 2, y + h / 2 -- Center of DModelPanel.
+
+	self.VehiclePreview.OnMousePressed = function( _, key )
+		if key == MOUSE_LEFT then
+			self.VehiclePreview.MousePressed = true
+			self.VehiclePreview.OldMousePositionX, self.VehiclePreview.OldMousePositionY = input.GetCursorPos( )
+			self.VehiclePreview:SetCursor( "blank" )
+			self.VehiclePreview:MouseCapture( true )
+			input.SetCursorPos( center_x, center_y )
+		end
+	end
+
+	self.VehiclePreview.OnMouseReleased = function( _, key )
+		if key == MOUSE_LEFT then
+			self.VehiclePreview.MousePressed = nil
+			input.SetCursorPos( self.VehiclePreview.OldMousePositionX, self.VehiclePreview.OldMousePositionY )
+			self.VehiclePreview.OldMousePositionX = nil
+			self.VehiclePreview.OldMousePositionY = nil
+			self.VehiclePreview:SetCursor( "hand" )
+			self.VehiclePreview:MouseCapture( false )
+		end
+	end
+
+	self.VehiclePreview.Think = function( )
+		if not self.VehiclePreview.MousePressed then return end
+		local mouse_x = input.GetCursorPos( )
+		local delta_x = mouse_x - center_x -- Positive = right, negative = left.
+		local ent = self.VehiclePreview:GetEntity( )
+		local ang = ent:GetAngles( )
+		ang:Add( Angle( 0, delta_x, 0 ) )
+		self.VehiclePreview:GetEntity( ):SetAngles( ang )
+		input.SetCursorPos( center_x, center_y )
+	end
+
 	self.VehiclePreview:Hide( )
 end
 
