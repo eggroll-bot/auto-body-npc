@@ -90,7 +90,7 @@ function PANEL:SetVehiclePreviewModel( model )
 
 			vehicle_modelpanel.PreDrawModel = function( )
 				render.SetMaterial( glow_material )
-				render.DrawSprite( preview_ent:GetPos( ), 256, 256, underglow_color ) -- Make it have a glowing sprite.
+				render.DrawSprite( preview_ent:GetPos( ), 256, 256, underglow_color ) -- Can't use the vehicle_underglow entity within the DModelPanel, so this is our best option. Though, it doesn't look as good as the vehicle_underglow entity.
 
 				return true -- Default functionality
 			end
