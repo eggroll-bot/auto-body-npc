@@ -16,19 +16,39 @@ function ENT:Draw( )
 	cam.End3D2D( )
 end
 
-net.Receive( "AutoBodyNPC_OpenGUI", function( )
-	local npc = net.ReadEntity( )
-	local entities = ents.FindInSphere( npc:GetPos( ), AutoBodyNPC.Config.CarFindRadius )
-	local cars = { }
+function ENT:Think( )
+	local pnl = self.AutoBodyPanel
 
-	for _, v in pairs( entities ) do
-		if v:IsVehicle( ) and v:GetNWEntity( "VCModOwner" ) == LocalPlayer( ) then
-			table.insert( cars, v )
-		end
+	if IsValid( pnl ) and pnl:GetActiveVehicle( ) and self:GetPos( ):DistToSqr( pnl:GetActiveVehicle( ):GetPos( ) ) > ( AutoBodyNPC.Config.CarFindRadius + 100 ) ^ 2 then -- Checks for a max ply -> npc distance of 512 (262144 = 512 ^ 2) and a max npc -> car distance of whatever is in the config file + 100.
+		pnl:PopulateCars( )
 	end
 
-	local auto_body_npc_panel = vgui.Create( "AutoBodyNPCPanel" )
-	auto_body_npc_panel:SetNPC( npc )
-	auto_body_npc_panel:SetCarTable( cars )
-	auto_body_npc_panel:PopulateCars( )
+	if IsValid( pnl ) and LocalPlayer( ):GetPos( ):DistToSqr( self:GetPos( ) ) > 262144 then
+		pnl.Background:Remove( )
+		pnl.VehiclePreview:Remove( )
+		pnl:Remove( )
+		self.AutoBodyPanel = nil
+		hook.Remove( "EntityRemoved", "AutoBodyNPC_VehicleRemoved" )
+	end
+
+	self:SetNextClientThink( CurTime( ) + 0.25 )
+end
+
+net.Receive( "AutoBodyNPC_OpenGUI", function( )
+	local npc = net.ReadEntity( )
+	local to_open = net.ReadBool( )
+
+	if to_open then
+		npc.AutoBodyPanel = vgui.Create( "AutoBodyNPCPanel" )
+		npc.AutoBodyPanel:SetNPC( npc )
+		npc.AutoBodyPanel:PopulateCars( )
+	else
+		if IsValid( npc.AutoBodyPanel ) then
+			npc.AutoBodyPanel.Background:Remove( )
+			npc.AutoBodyPanel.VehiclePreview:Remove( )
+			npc.AutoBodyPanel:Remove( )
+			npc.AutoBodyPanel = nil
+			hook.Remove( "EntityRemoved", "AutoBodyNPC_VehicleRemoved" )
+		end
+	end
 end )

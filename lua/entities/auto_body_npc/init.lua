@@ -28,5 +28,13 @@ end
 function ENT:Use( ply )
 	net.Start( "AutoBodyNPC_OpenGUI" )
 	net.WriteEntity( self )
+	net.WriteBool( true ) -- Open
 	net.Send( ply )
+end
+
+function ENT:OnRemove( )
+	net.Start( "AutoBodyNPC_OpenGUI" )
+	net.WriteEntity( self )
+	net.WriteBool( false ) -- Close
+	net.Broadcast( )
 end
