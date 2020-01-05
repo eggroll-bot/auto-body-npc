@@ -118,10 +118,14 @@ function PANEL:UpdateVehiclePreview( upgrade_type, upgrade_value )
 		preview_ent:SetBodygroup( upgrade_value[ 1 ], upgrade_value[ 2 ] )
 	elseif upgrade_type == 4 then -- Underglow -- Value: 0 = No underglow color, otherwise color structure provided.
 		if upgrade_value == 0 then
+			vehicle_modelpanel.UnderglowColor = nil
+
 			vehicle_modelpanel.PreDrawModel = function( )
 				return true -- Default functionality
 			end
 		else
+			vehicle_modelpanel.UnderglowColor = upgrade_value
+
 			vehicle_modelpanel.PreDrawModel = function( )
 				render.SetMaterial( glow_material )
 				render.DrawSprite( preview_ent:GetPos( ), 256, 256, upgrade_value ) -- Make it have a glowing sprite.
@@ -315,6 +319,7 @@ function PANEL:CreateResprayPanel( equipped )
 	self:Reset( )
 
 	self:AddButton( "RESPRAY", function( )
+		self:UpdateVehiclePreview( 1, self:GetActiveVehicle( ):GetColor( ) ) -- 1 = Respray -- Need to re-set the color if they modified without saving.
 		self:CreateModificationPanel( )
 	end, 15, "<", true )
 
@@ -325,6 +330,11 @@ function PANEL:CreateResprayPanel( equipped )
 	color_selector:SetPalette( false )
 	color_selector:SetAlphaBar( false )
 	color_selector:SetColor( equipped )
+
+	color_selector.Think = function( )
+		self:UpdateVehiclePreview( 1, color_selector:GetColor( ) ) -- 1 = Respray
+	end
+
 	self.ContentScrollPanel:AddItem( color_selector )
 	table.insert( self.Elements, color_selector )
 	local config_custom_cars = AutoBodyNPC.Config.CustomCars[ self:GetActiveVehicle( ):GetVehicleClass( ) ]
@@ -342,7 +352,7 @@ function PANEL:CreateResprayPanel( equipped )
 			net.WriteUInt( new_color.g, 8 )
 			net.WriteUInt( new_color.b, 8 )
 			net.SendToServer( )
-			self:UpdateVehiclePreview( 1, new_color ) -- 1 = Respray
+			self:UpdateVehiclePreview( 1, new_color ) -- 1 = Respray.
 			local current_hoverlerp = btn.hoverlerp
 			self:CreateResprayPanel( new_color )
 			self.Elements[ 3 ].hoverlerp = current_hoverlerp -- Sets hoverlerp of the purchase button back to the original hoverlerp value.
@@ -369,7 +379,7 @@ function PANEL:CreateSkinsPanel( equipped ) -- Desync the equipped from the serv
 		if i == equipped then
 			self:AddButton( "SKIN " .. i + 1, function( ) end, 5, "EQUIPPED" )
 		else
-			self:AddButton( "SKIN " .. i + 1, function( btn )
+			local skin_btn = self:AddButton( "SKIN " .. i + 1, function( btn )
 				net.Start( "AutoBodyNPC_UpdateVehicle" )
 				net.WriteEntity( self:GetNPC( ) )
 				net.WriteEntity( self:GetActiveVehicle( ) )
@@ -382,6 +392,18 @@ function PANEL:CreateSkinsPanel( equipped ) -- Desync the equipped from the serv
 				self.Elements[ i + 2 ].hoverlerp = current_hoverlerp
 				notification.AddLegacy( "You purchased a skin change for " .. price .. ".", NOTIFY_GENERIC, 2 )
 			end, 5, price )
+
+			local preview_ent = self.VehiclePreview:GetEntity( )
+
+			skin_btn.Think = function( )
+				if skin_btn:IsHovered( ) and preview_ent:GetSkin( ) ~= i then
+					self:UpdateVehiclePreview( 2, i ) -- 2 = Skin.
+				end
+
+				if not skin_btn:IsHovered( ) and preview_ent:GetSkin( ) == i then -- Checking if preview_ent's skin is equal to i is more efficient than checking preview_ent's skin against the current vehicle's skin.
+					self:UpdateVehiclePreview( 2, equipped ) -- 2 = Skin.
+				end
+			end
 		end
 	end
 end
@@ -410,7 +432,7 @@ function PANEL:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_option
 
 			current_price = current_price or price
 
-			self:AddButton( "OPTION " .. i + 1, function( btn )
+			local bodygroup_btn = self:AddButton( "OPTION " .. i + 1, function( btn )
 				net.Start( "AutoBodyNPC_UpdateVehicle" )
 				net.WriteEntity( self:GetNPC( ) )
 				net.WriteEntity( self:GetActiveVehicle( ) )
@@ -418,12 +440,24 @@ function PANEL:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_option
 				net.WriteUInt( bodygroup_id, 8 )
 				net.WriteUInt( i, 8 )
 				net.SendToServer( )
-				self:UpdateVehiclePreview( 3, { bodygroup_id, i } ) -- 3 = Bodygroup
+				self:UpdateVehiclePreview( 3, { bodygroup_id, i } ) -- 3 = Bodygroup.
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateBodygroupPanel( bodygroup_id, name, pretty_name, num_options, i )
 				self.Elements[ i + 2 ].hoverlerp = current_hoverlerp
 				notification.AddLegacy( "You purchased a bodygroup change for " .. price .. ".", NOTIFY_GENERIC, 2 )
 			end, 5, current_price )
+
+			local preview_ent = self.VehiclePreview:GetEntity( )
+
+			bodygroup_btn.Think = function( )
+				if bodygroup_btn:IsHovered( ) and preview_ent:GetBodygroup( bodygroup_id ) ~= i then
+					self:UpdateVehiclePreview( 3, { bodygroup_id, i } ) -- 3 = Bodygroup.
+				end
+
+				if not bodygroup_btn:IsHovered( ) and preview_ent:GetBodygroup( bodygroup_id ) == i then -- Checking if preview_ent's bodygroup is equal to i is more efficient than checking preview_ent's bodygroup against the current vehicle's bodygroup.
+					self:UpdateVehiclePreview( 3, { bodygroup_id, equipped } ) -- 3 = Bodygroup.
+				end
+			end
 		end
 	end
 end
@@ -506,22 +540,34 @@ function PANEL:CreateUnderglowPanel( equipped )
 		self:CreateModificationPanel( )
 	end, 15, "<", true )
 
+	local preview = self.VehiclePreview
+
 	if equipped == 0 then
 		self:AddButton( "NO UNDERGLOW", function( ) end, 5, "EQUIPPED" )
 	else
-		self:AddButton( "NO UNDERGLOW", function( btn )
+		local underglow_btn = self:AddButton( "NO UNDERGLOW", function( btn )
 			net.Start( "AutoBodyNPC_UpdateVehicle" )
 			net.WriteEntity( self:GetNPC( ) )
 			net.WriteEntity( self:GetActiveVehicle( ) )
 			net.WriteUInt( 5, 3 ) -- 5 = Underglow.
-			net.WriteUInt( 0, 7 ) -- 0 = No underglow color
+			net.WriteUInt( 0, 7 ) -- 0 = No underglow color.
 			net.SendToServer( )
-			self:UpdateVehiclePreview( 4, 0 ) -- 4 = Underglow, 0 = No underglow color
+			self:UpdateVehiclePreview( 4, 0 ) -- 4 = Underglow, 0 = No underglow color.
 			local current_hoverlerp = btn.hoverlerp
 			self:CreateUnderglowPanel( 0 )
 			self.Elements[ 2 ].hoverlerp = current_hoverlerp
 			notification.AddLegacy( "You reverted back to having no underglow.", NOTIFY_GENERIC, 2 )
 		end, 5, DarkRP.formatMoney( 0 ) )
+
+		underglow_btn.Think = function( )
+			if underglow_btn:IsHovered( ) and preview.UnderglowColor then
+				self:UpdateVehiclePreview( 4, 0 ) -- 4 = Underglow, 0 = No underglow color.
+			end
+
+			if not underglow_btn:IsHovered( ) and not preview.UnderglowColor then
+				self:UpdateVehiclePreview( 4, AutoBodyNPC.Config.GlobalUnderglowSettings[ equipped ].color ) -- 4 = Underglow.
+			end
+		end
 	end
 
 	for k, v in pairs( AutoBodyNPC.Config.GlobalUnderglowSettings ) do
@@ -532,19 +578,29 @@ function PANEL:CreateUnderglowPanel( equipped )
 			local price = config_custom_cars and config_custom_cars.underglow and config_custom_cars.underglow[ v.name ] or v.price
 			price = DarkRP.formatMoney( price )
 
-			self:AddButton( v.name, function( btn )
+			local underglow_btn = self:AddButton( v.name, function( btn )
 				net.Start( "AutoBodyNPC_UpdateVehicle" )
 				net.WriteEntity( self:GetNPC( ) )
 				net.WriteEntity( self:GetActiveVehicle( ) )
 				net.WriteUInt( 5, 3 ) -- 5 = Underglow.
 				net.WriteUInt( k, 7 )
 				net.SendToServer( )
-				self:UpdateVehiclePreview( 4, v.color ) -- 4 = Underglow
+				self:UpdateVehiclePreview( 4, v.color ) -- 4 = Underglow.
 				local current_hoverlerp = btn.hoverlerp
 				self:CreateUnderglowPanel( k )
 				self.Elements[ k + 2 ].hoverlerp = current_hoverlerp
 				notification.AddLegacy( "You purchased an underglow upgrade for " .. price .. ".", NOTIFY_GENERIC, 2 )
 			end, 5, price )
+
+			underglow_btn.Think = function( )
+				if underglow_btn:IsHovered( ) and preview.UnderglowColor ~= v.color then
+					self:UpdateVehiclePreview( 4, v.color ) -- 4 = Underglow.
+				end
+
+				if not underglow_btn:IsHovered( ) and preview.UnderglowColor == v.color then -- Checking if preview's underglow color is equal to v.color is more efficient than checking preview's underglow color against the current vehicle's underglow color.
+					self:UpdateVehiclePreview( 4, AutoBodyNPC.Config.GlobalUnderglowSettings[ equipped ] and AutoBodyNPC.Config.GlobalUnderglowSettings[ equipped ].color or 0 ) -- 4 = Underglow.
+				end
+			end
 		end
 	end
 end
