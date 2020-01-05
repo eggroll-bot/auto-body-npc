@@ -271,6 +271,8 @@ function PANEL:AddButton( text, do_click, bottom_spacing, right_aligned_text, la
 	end
 
 	table.insert( self.Elements, button )
+
+	return button
 end
 
 function PANEL:Reset( )
