@@ -214,7 +214,7 @@ function PANEL:CreateVehiclePreview( )
 	end
 
 	self.VehiclePreview.OnMouseReleased = function( _, key )
-		if key == MOUSE_LEFT then
+		if key == MOUSE_LEFT and self.VehiclePreview.MousePressed then
 			self.VehiclePreview.MousePressed = nil
 			input.SetCursorPos( self.VehiclePreview.OldMousePositionX, self.VehiclePreview.OldMousePositionY )
 			self.VehiclePreview.OldMousePositionX = nil
