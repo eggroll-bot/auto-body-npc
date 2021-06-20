@@ -12,7 +12,7 @@ if SERVER then
 	include( "auto_body_npc/sv_vehicles.lua" )
 
 	if AutoBodyNPC.Config.UseWorkshop then
-		resource.AddWorkshop( "1947475185" )
+		resource.AddWorkshop( "2522663994" )
 	else
 		resource.AddFile( "resource/fonts/gratis.ttf" )
 		resource.AddFile( "materials/auto_body_npc/garage.jpg" )
