@@ -6,7 +6,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Download and unpack glualint
         run: |
           wget https://github.com/FPtje/GLuaFixer/releases/download/1.18.1/glualint-1.18.1-linux-stripped.zip
@@ -16,14 +16,14 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Prepare for upload
         run: |
           rm -r .git
           rm -r .github
           rm *.md
       - name: Upload artifact
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: auto_body_npc
           path: .
