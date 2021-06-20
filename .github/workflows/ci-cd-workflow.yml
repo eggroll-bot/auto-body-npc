@@ -9,8 +9,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Download and unpack glualint
         run: |
-          wget https://github.com/FPtje/GLuaFixer/releases/download/1.12.0/glualint-1.12.0-linux-stripped.zip
-          unzip glualint-1.12.0-linux-stripped.zip
+          wget https://github.com/FPtje/GLuaFixer/releases/download/1.18.1/glualint-1.18.1-linux-stripped.zip
+          unzip glualint-1.18.1-linux-stripped.zip
       - name: Execute glualint
         run: ./glualint .
   upload:
