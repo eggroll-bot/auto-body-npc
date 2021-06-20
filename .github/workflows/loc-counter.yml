@@ -10,7 +10,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
       - name: Install SLOC
-        run: npm install -g sloc
+        run: sudo npm install -g sloc
       - name: Run SLOC
         run: |
           sloc --keys source --details ./ 2>&1 | tee source_loc.txt # For each file.
